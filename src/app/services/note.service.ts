@@ -17,9 +17,7 @@ export class NoteService {
   currentNote?: Note;
   noteList!: Note[];
 
-  constructor(private http: HttpClient) {
-    this.getNotes();
-  }
+  constructor(private http: HttpClient) {}
 
   addNote(): Note {
     this.currentNote = {  id: 0,
@@ -32,23 +30,25 @@ export class NoteService {
   }
 
   getNotes() {
-    this.http.get<Note[]>(this.API_URL + "notes", this.httpOptions)
+    this.http.get<Note[]>(`${this.API_URL}notes/`, this.httpOptions)
       .pipe(
+        tap(noteList => this.noteList = noteList),
         catchError(this.handleError<Note[]>('getNotes', []))
       )
-      .subscribe(noteList => this.noteList = noteList);
+      .subscribe();
   }
 
   getNote(id: number) {
-    this.http.get<Note>(this.API_URL + "notes/" + id, this.httpOptions)
+    this.http.get<Note>(`${this.API_URL}notes/${id}`, this.httpOptions)
       .pipe(
+        tap(note => this.currentNote = note),
         catchError(this.handleError<Note>('getNote'))
       )  
-      .subscribe(note => this.currentNote = note);
+      .subscribe();
   }
 
   updateNoteDetails(note: Note) {
-    this.http.put<Note>(this.API_URL + "notes/" + note.id, note, this.httpOptions)
+    this.http.put<Note>(`${this.API_URL}notes/${note.id}`, note, this.httpOptions)
       .pipe(
         tap(n => this.noteList = this.noteList.map(curNote => curNote.id === note.id ? n : curNote)),
         tap(n => this.currentNote = n),
@@ -58,7 +58,7 @@ export class NoteService {
   }
 
   saveNewNote(note: Note) {
-    return this.http.post<Note>(this.API_URL + "notes", note, this.httpOptions)
+    return this.http.post<Note>(`${this.API_URL}notes/`, note, this.httpOptions)
       .pipe(
         tap(n => this.noteList = [...this.noteList, n]),
         tap(n => this.currentNote = n),
@@ -68,7 +68,7 @@ export class NoteService {
   }
 
   deleteNote(id: number) {
-    return this.http.delete<Note>(this.API_URL + "notes/" + id, this.httpOptions)
+    return this.http.delete<Note>(`${this.API_URL}notes/${id}`, this.httpOptions)
       .pipe(
         tap(() => this.noteList = this.noteList.filter(curNote => curNote.id !== id)),
         tap(() => this.currentNote?.id === id ? this.setCurrentNote(undefined) : void 0),

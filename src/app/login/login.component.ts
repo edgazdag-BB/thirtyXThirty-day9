@@ -14,6 +14,14 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(5)])
   });
 
+  get userName() {
+    return this.loginForm.get('userName');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+  
   constructor(private authService: AuthService, private snackBar: MatSnackBar) {}
 
   login(form: FormGroup) {
@@ -24,13 +32,5 @@ export class LoginComponent {
     if (!this.authService.logIn(userName, passWord)) { 
       this.snackBar.open("Invalid Credentials. Please try again.", "Ok", );
     }
-  }
-
-  get userName() {
-    return this.loginForm.get('userName');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
   }
 }

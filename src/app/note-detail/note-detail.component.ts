@@ -10,6 +10,5 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class NoteDetailComponent {
   @Input() noteCategories!: string[];
   @Input() noteForm!: FormGroup;
-  @Output() noteSubmitted = new EventEmitter();
   @Output() noteSaved = new EventEmitter();
 }

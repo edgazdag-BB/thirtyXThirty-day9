@@ -20,6 +20,7 @@ export class NotesComponent implements OnInit {
   constructor(public noteService: NoteService) {}
 
   ngOnInit() {
+    this.noteService.getNotes();
     this.noteService.currentNote && this.noteForm.patchValue(this.noteService.currentNote); 
   }
 
@@ -34,10 +35,6 @@ export class NotesComponent implements OnInit {
   }
 
   saveNote() {
-    if (this.noteForm.invalid) {
-      return;
-    }
-
     const note = this.noteForm.value as Omit<Note, 'id'>;
 
     this.noteService.currentNote?.id === 0 ? 
