@@ -1,0 +1,27 @@
+<div class="flex">
+  <mat-card  class="mat-elevation-z8 ">
+    <mat-card-header>Product Information</mat-card-header>
+    <form [formGroup]="noteForm" (ngSubmit)="noteSaved.emit()">
+      <mat-form-field appearance="standard">
+        <mat-label>Note Name</mat-label>
+        <input matInput id="name" name="name" type="text"  formControlName="name">
+        <mat-error *ngIf="noteForm.controls['name'].errors?.['required']">Note Name is required</mat-error>
+      </mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-radio-group required class="radio-group" formControlName="category">
+        <mat-radio-button class="radio-button" *ngFor="let category of noteCategories" [value]="category">
+          {{category}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="noteForm.controls['category'].errors?.['required']">Category is required</mat-error>
+      <mat-form-field appearance="standard">
+        <mat-label>Note</mat-label>
+        <textarea matInput id="note" name="note" type="text" formControlName="note"></textarea>
+        <mat-error *ngIf="noteForm.controls['note'].errors?.['required']">Note is required</mat-error>
+      </mat-form-field>
+      <div class="flex">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!noteForm.valid">Save Note</button>
+      </div>
+  </form>
+  </mat-card>
+</div>

@@ -1,0 +1,16 @@
+<div class="flex">
+  <app-note-list
+    class="list-component"
+    [noteList]="noteService.noteList"
+    [displayedColumns]="displayedColumns"
+    (addNote)="addNote()"
+    (editNote)="setCurrentNote($event)"
+    (deleteNote)="deleteNote($event)"
+  ></app-note-list>
+  <app-note-detail *ngIf="noteService.currentNote"
+    class="detail-component"
+    [noteCategories]="noteService.noteCategories"
+    [noteForm]="noteForm"
+    (noteSaved)="saveNote()"
+  ></app-note-detail>
+</div>

@@ -1,0 +1,39 @@
+<div class="flex">
+  <button mat-raised-button color="primary" (click)="addNote.emit()">
+    Add Note
+  </button>
+</div>
+<br>
+<table mat-table [dataSource]="noteList" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let note"> {{note.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Note Name </th>
+    <td mat-cell *matCellDef="let note"> {{note.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="note">
+    <th mat-header-cell *matHeaderCellDef> Note </th>
+    <td mat-cell *matCellDef="let note"> {{ (note.note | slice:0:20)+'...' }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef> Category </th>
+    <td mat-cell *matCellDef="let note"> {{ note.category }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef>Delete</th>
+    <td mat-cell *matCellDef="let note;">
+      <button mat-stroked-button color="warn" class="delete-button" (click)="deleteClicked($event, note.id)">
+        <mat-icon >clear</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr class="data-row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editNote.emit(row)"></tr>
+</table>
