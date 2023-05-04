@@ -19,16 +19,6 @@ export class NoteService {
 
   constructor(private http: HttpClient) {}
 
-  addNote(): Note {
-    this.currentNote = {  id: 0,
-      name: '',
-      note: '',
-      category: '',
-    };
-
-    return this.currentNote;
-  }
-
   getNotes() {
     this.http.get<Note[]>(`${this.API_URL}notes/`, this.httpOptions)
       .pipe(
@@ -39,30 +29,29 @@ export class NoteService {
   }
 
   getNote(id: number) {
-    this.http.get<Note>(`${this.API_URL}notes/${id}`, this.httpOptions)
+    return this.http.get<Note>(`${this.API_URL}notes/${id}`, this.httpOptions)
       .pipe(
         tap(note => this.currentNote = note),
         catchError(this.handleError<Note>('getNote'))
-      )  
-      .subscribe();
+      );
   }
 
-  updateNoteDetails(note: Note) {
+  updateNote(note: Note) {
     this.http.put<Note>(`${this.API_URL}notes/${note.id}`, note, this.httpOptions)
       .pipe(
         tap(n => this.noteList = this.noteList.map(curNote => curNote.id === note.id ? n : curNote)),
         tap(n => this.currentNote = n),
-        catchError(this.handleError<Note>('updateNoteDetails'))
+        catchError(this.handleError<Note>('updateNote'))
       )
       .subscribe();
   }
 
-  saveNewNote(note: Note) {
+  createNote(note: Note) {
     return this.http.post<Note>(`${this.API_URL}notes/`, note, this.httpOptions)
       .pipe(
         tap(n => this.noteList = [...this.noteList, n]),
         tap(n => this.currentNote = n),
-        catchError(this.handleError<Note>('saveNewNote'))
+        catchError(this.handleError<Note>('createNote'))
       )
       .subscribe();
   }
@@ -77,16 +66,8 @@ export class NoteService {
     .subscribe();
   }
 
-  getNoteCategories(): string[] {
-    return this.noteCategories;
-  }
-
   setCurrentNote(note?: Note) {
     this.currentNote = note ? {...note} : note;
-  }
-
-  getCurrentNote() {
-    return this.currentNote;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
