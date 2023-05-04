@@ -1,0 +1,23 @@
+<ng-container>
+  <mat-toolbar class="nav-header" color="primary">
+    <span>30 X 30 - Day 9</span>
+  </mat-toolbar>
+  <mat-sidenav-container class="nav-container">
+    <mat-sidenav class="nav-sidenav" mode="side" [opened]="true" [fixedTopGap]="60">
+      <mat-list>
+        <mat-list-item><h2>Navigation</h2></mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="item" routerLink="home">Home</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="item" routerLink="notes">Notes</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="item" (click)="logout()">Log Out</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="nav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+
